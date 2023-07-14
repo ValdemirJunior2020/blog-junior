@@ -1,15 +1,15 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { AppBar, Box, Button, IconButton, Toolbar, useMediaQuery } from "@mui/material";
-import { Link, useNavigate } from 'react-router-dom';
-import MenuIcon from "@mui/icons-material/Menu";
+import React, { useContext, useEffect, useState } from 'react'
+import { AppBar, Box, Button, IconButton, Toolbar, useMediaQuery } from "@mui/material"
+import { Link, useNavigate } from 'react-router-dom'
+import { Menu as MenuIcon } from "@mui/icons-material"
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { AuthContext } from '../App';
 
 const Navbar = () => {
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorEl, setAnchorEl] = React.useState(null);
   const { auth, setAuth, refresh, setRefresh } = useContext(AuthContext);
-  const navigator = useNavigate();
+  const navigator = useNavigate()
 
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -18,7 +18,7 @@ const Navbar = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const isNonMobileDevice = useMediaQuery("(min-width: 1000px)");
+  const isNonMobileDevice = useMediaQuery("(min-width: 1000px)")
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -27,61 +27,45 @@ const Navbar = () => {
         headers: {
           token: localStorage.getItem("token")
         }
-      });
-      const data = await res.json();
+      })
+      const data = await res.json()
       if (res.ok) {
-        setAuth(data);
-        setRefresh(false);
-      } else {
-        setAuth(null);
+        setAuth(data)
+        setRefresh(false)
+      }else{
+        setAuth(null)
       }
-    };
-    fetchUser();
-  }, [auth, refresh, setAuth, setRefresh]); // Include setAuth and setRefresh in the dependency array
-  
+    }
+    fetchUser()
+  }, [auth, refresh])
 
   const logOut = () => {
-    localStorage.removeItem("token");
-    setRefresh(true);
-    navigator("/login");
-  };
+    localStorage.removeItem("token")
+    setRefresh(true)
+    navigator("/login")
+  }
 
   return (
     <AppBar sx={{ p: "0 5%" }}>
       <Toolbar sx={{ justifyContent: "space-between" }}>
         <h3>Blogs</h3>
         <Box sx={{ display: "flex", alignItems: "center", gap: 3 }}>
-          {isNonMobileDevice ? (
-            auth ? (
-              <>
-                <Button>
-                  <Link style={{ color: "#fff", textDecoration: "none" }} to={"/"}>
-                    Home
-                  </Link>
-                </Button>
-                <Button>
-                  <Link style={{ color: "#fff", textDecoration: "none" }} to={"/create"}>
-                    Create
-                  </Link>
-                </Button>
-                <Button color="secondary" onClick={logOut}>Logout</Button>
-              </>
-            ) : (
-              <>
-                <Button>
-                  <Link style={{ color: "#fff", textDecoration: "none" }} to={"/login"}>
-                    Login
-                  </Link>
-                </Button>
-                <Button>
-                  <Link style={{ color: "#fff", textDecoration: "none" }} to={"/register"}>
-                    Register
-                  </Link>
-                </Button>
-              </>
-            )
-          ) : (
+          {isNonMobileDevice ?
             <>
+              {auth ?
+                <>
+                  <Button><Link style={{ color: "#fff", textDecoration: "none" }} to={"/"}>Home</Link></Button>
+                  <Button><Link style={{ color: "#fff", textDecoration: "none" }} to={"/create"}>Create</Link></Button>
+                  <Button color='inherit' onClick={logOut}>Logout</Button>
+                </>
+                :
+                <>
+                  <Button><Link style={{ color: "#fff", textDecoration: "none" }} to={"/login"}>Login</Link></Button>
+                  <Button><Link style={{ color: "#fff", textDecoration: "none" }} to={"/register"}>Register</Link></Button>
+                </>
+              }
+            </>
+            : <>
               <IconButton
                 sx={{ color: "#fff" }}
                 id="basic-button"
@@ -102,41 +86,23 @@ const Navbar = () => {
                   'aria-labelledby': 'basic-button',
                 }}
               >
-                {auth ? (
-                  <>
-                    <MenuItem onClick={handleClose}>
-                      <Link style={{ color: "#333", textDecoration: "none" }} to={"/"}>
-                        Home
-                      </Link>
-                    </MenuItem>
-                    <MenuItem onClick={handleClose}>
-                      <Link style={{ color: "#333", textDecoration: "none" }} to={"/create"}>
-                        Create
-                      </Link>
-                    </MenuItem>
-                    <MenuItem onClick={() => { handleClose(); logOut(); }}>Logout</MenuItem>
-                  </>
-                ) : (
-                  <>
-                    <MenuItem onClick={handleClose}>
-                      <Link style={{ color: "#333", textDecoration: "none" }} to={"/login"}>
-                        Login
-                      </Link>
-                    </MenuItem>
-                    <MenuItem onClick={handleClose}>
-                      <Link style={{ color: "#333", textDecoration: "none" }} to={"/register"}>
-                        Register
-                      </Link>
-                    </MenuItem>
-                  </>
-                )}
+                {auth ? [
+                  <MenuItem onClick={handleClose}><Link style={{ color: "#333", textDecoration: "none" }} to={"/"}>Home</Link></MenuItem>,
+                  <MenuItem onClick={handleClose}><Link style={{ color: "#333", textDecoration: "none" }} to={"/create"}>Create</Link></MenuItem>,
+                  <MenuItem onClick={() => {handleClose(); logOut()}}>Logout</MenuItem>,
+                ]
+                  :
+                  [
+                    <MenuItem onClick={handleClose}><Link style={{ color: "#333", textDecoration: "none" }} to={"/login"}>Login</Link></MenuItem>,
+                    <MenuItem onClick={handleClose}><Link style={{ color: "#333", textDecoration: "none" }} to={"/register"}>Register</Link></MenuItem>
+                  ]}
               </Menu>
-            </>
-          )}
+
+            </>}
         </Box>
       </Toolbar>
     </AppBar>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default Navbar
