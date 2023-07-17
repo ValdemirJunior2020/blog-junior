@@ -11,19 +11,23 @@ import moment from "moment";
 import { AuthContext } from '../App';
 
 export default function PostCard(props) {
-  const {user, _id, title, content, image, createdOn} = props.post;
-  const {auth} = React.useContext(AuthContext)
+  const { user, _id, title, content, image, createdOn } = props.post;
+  const { auth } = React.useContext(AuthContext);
+  const [showFullContent, setShowFullContent] = React.useState(false);
+
+  const handleReadMore = () => {
+    setShowFullContent(true);
+  };
+
   return (
     <Card sx={{ width: "100%", boxShadow: "0 0 15px rgb(0, 0, 0, 0.2)", borderRadius: "4px" }} id={_id}>
       <CardHeader
         avatar={
           <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            {user.name.slice(0,1)}
+            {user.name.slice(0, 1)}
           </Avatar>
         }
-        action={
-          auth._id === user._id && <Actions id={_id}/>
-        }
+        action={auth._id === user._id && <Actions id={_id} />}
         title={title}
         subheader={moment(createdOn).fromNow()}
       />
@@ -35,7 +39,12 @@ export default function PostCard(props) {
       />
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-          {content}
+          {showFullContent ? content : content.slice(0, 100)}
+          {!showFullContent && content.length > 100 && (
+            <span style={{ color: "blue", cursor: "pointer" }} onClick={handleReadMore}>
+              ... Read More
+            </span>
+          )}
         </Typography>
       </CardContent>
     </Card>
