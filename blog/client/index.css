@@ -1,0 +1,42 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+*{
+  box-sizing: border-box;
+}
+.home-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.moving-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('https://th.bing.com/th/id/R.607b3c8a0c16579379fe8b725d761650?rik=A4Y0RLJkvKzZuQ&riu=http%3a%2f%2fknoxvillecpr.com%2fwp-content%2fuploads%2f2014%2f04%2fstroke.jpg&ehk=OY20IwFpyZBSnvXb0I1uZBUIxjEZ%2fzaovCYWvP5Bdz0%3d&risl=&pid=ImgRaw&r=0&sres=1&sresct=1');
+  background-size: cover;
+  background-position: center;
+  animation: moveBackground 20s linear infinite;
+}
+
+@keyframes moveBackground {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
